@@ -12,6 +12,7 @@ Usage:
     evmbin state-test <file> [--json --std-json --std-dump-json --only NAME --chain CHAIN --std-out-only --std-err-only]
     evmbin stats [options]
     evmbin stats-jsontests-vm <file>
+    evmbin disasm --code <code>
     evmbin [options]
     evmbin [-h | --help]
 
