@@ -350,7 +350,7 @@ fn run_disasm(args: Args) {
 			break;
 		}
 
-		let op = Instruction::from_u8(code[pc]).expect("oprator should not be None");
+		let op = Instruction::from_u8(code[pc]).expect("unknown opcode");
 		print!("{:?}  {:?}", pc, op);
 
 		if op.is_push() {
