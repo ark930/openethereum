@@ -9,11 +9,11 @@ EVM implementation for OpenEthereum.
   Copyright 2015-2020 Parity Technologies (UK) Ltd.
 
 Usage:
-    openethereum-evm state-test <file> [--json --std-json --std-dump-json --only NAME --chain CHAIN --std-out-only --std-err-only]
-    openethereum-evm stats [options]
-    openethereum-evm stats-jsontests-vm <file>
-    openethereum-evm [options]
-    openethereum-evm [-h | --help]
+    evmbin state-test <file> [--json --std-json --std-dump-json --only NAME --chain CHAIN --std-out-only --std-err-only]
+    evmbin stats [options]
+    evmbin stats-jsontests-vm <file>
+    evmbin [options]
+    evmbin [-h | --help]
 
 Commands:
     state-test         Run a state test from a json file.

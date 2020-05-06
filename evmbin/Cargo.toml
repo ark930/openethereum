@@ -6,26 +6,46 @@ authors = ["Parity Technologies <admin@parity.io>"]
 edition = "2018"
 
 [[bin]]
-name = "openethereum-evm"
+name = "evmbin"
 path = "./src/main.rs"
 
 [dependencies]
 account-state = { path = "../ethcore/account-state" }
+blooms-db = { path = "../util/blooms-db" }
 common-types = { path = "../ethcore/types", features = ["test-helpers"] }
 docopt = "1.0"
 env_logger = "0.5"
 ethcore = { path = "../ethcore", features = ["test-helpers", "json-tests"] }
+ethcore-blockchain = { path = "../ethcore/blockchain" }
+ethcore-db = { path = "../ethcore/db" }
 ethereum-types = "0.9.0"
 ethjson = { path = "../json", features = ["test-helpers"] }
+ethtrie = { package = "patricia-trie-ethereum", path = "../util/patricia-trie-ethereum" }
 evm = { path = "../ethcore/evm" }
+executive-state = { path = "../ethcore/executive-state" }
+hash-db = "0.15.0"
+hex = "0.3.1"
+journaldb = { path = "../util/journaldb" }
+keccak-hash = "0.5.0"
+kvdb = "0.5.0"
+kvdb-memorydb = "0.5.0"
+kvdb-rocksdb = "0.7.0"
+log = "0.4"
+machine = { path = "../ethcore/machine" }
+migration-rocksdb = { path = "../util/migration-rocksdb" }
 panic_hook = { path = "../util/panic-hook" }
 parity-bytes = "0.1"
 pod = { path = "../ethcore/pod" }
+rlp = "0.4.5"
 rustc-hex = "2.1.0"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 spec = { path = "../ethcore/spec" }
+state-db = { path = "../ethcore/state-db" }
+tempfile = "3.1"
 trace = { path = "../ethcore/trace" }
+trie-db = "0.20.0"
+trie-vm-factories = { path = "../ethcore/trie-vm-factories" }
 vm = { path = "../ethcore/vm" }
 
 [dev-dependencies]

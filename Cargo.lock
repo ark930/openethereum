@@ -988,7 +988,7 @@ checksum = "486a4699cf13c63af330d7b5ba854cb062b427a218cbbb09fdc7082b76fb54e7"
 dependencies = [
  "base64 0.12.0",
  "bs58",
- "hex",
+ "hex 0.4.2",
  "log",
  "rand 0.7.3",
  "rlp",
@@ -1723,24 +1723,43 @@ name = "evmbin"
 version = "0.1.0"
 dependencies = [
  "account-state",
+ "blooms-db",
  "common-types",
  "criterion",
  "docopt",
  "env_logger 0.5.13",
  "ethcore",
+ "ethcore-blockchain",
+ "ethcore-db",
  "ethereum-types",
  "ethjson",
  "evm",
+ "executive-state",
+ "hash-db",
+ "hex 0.3.2",
  "hex-literal",
+ "journaldb",
+ "keccak-hash",
+ "kvdb",
+ "kvdb-memorydb",
+ "kvdb-rocksdb",
+ "log",
+ "machine",
+ "migration-rocksdb",
  "panic_hook",
  "parity-bytes",
+ "patricia-trie-ethereum",
  "pod",
+ "rlp",
  "rustc-hex 2.1.0",
  "serde",
  "serde_json",
  "spec",
+ "state-db",
  "tempfile",
  "trace",
+ "trie-db",
+ "trie-vm-factories",
  "vm",
 ]
 
@@ -2060,6 +2079,12 @@ checksum = "1010591b26bbfe835e9faeabeb11866061cc7dcebffd56ad7d0942d0e61aefd8"
 dependencies = [
  "libc",
 ]
+
+[[package]]
+name = "hex"
+version = "0.3.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "805026a5d0141ffc30abb3be3173848ad46a1b1664fe632428479619a3644d77"
 
 [[package]]
 name = "hex"

@@ -43,12 +43,16 @@ use docopt::Docopt;
 use rustc_hex::FromHex;
 use ethereum_types::{U256, Address};
 use ethcore::{json_tests, test_helpers::TrieSpec};
+use evm::{InstructionInfo, Instruction};
+use hex;
 use spec;
 use serde::Deserialize;
 use vm::{ActionParams, ActionType};
 
+mod db;
 mod info;
 mod display;
+mod test_helpers;
 
 use crate::info::{Informant, TxInput};
 
@@ -57,11 +61,12 @@ EVM implementation for OpenEthereum.
   Copyright 2015-2020 Parity Technologies (UK) Ltd.
 
 Usage:
-    openethereum-evm state-test <file> [--chain CHAIN --only NAME --json --std-json --std-dump-json --std-out-only --std-err-only]
-    openethereum-evm stats [options]
-    openethereum-evm stats-jsontests-vm <file>
-    openethereum-evm [options]
-    openethereum-evm [-h | --help]
+    evmbin state-test <file> [--chain CHAIN --only NAME --json --std-json --std-dump-json --std-out-only --std-err-only]
+    evmbin stats [options]
+    evmbin stats-jsontests-vm <file>
+    evmbin disasm --code <code>
+    evmbin [options]
+    evmbin [-h | --help]
 
 Commands:
     state-test         Run a state test on a provided state test JSON file.
@@ -116,6 +121,8 @@ fn main() {
 		} else {
 			run_call(args, display::std_json::Informant::default())
 		};
+	} else if args.cmd_disasm {
+		run_disasm(args)
 	} else {
 		run_call(args, display::simple::Informant::default())
 	}
@@ -333,11 +340,38 @@ fn run_call<T: Informant>(args: Args, informant: T) {
 	T::finish(result, &mut sink);
 }
 
+fn run_disasm(args: Args) {
+	let code = arg(args.code(), "--code").expect("code should not be None");
+	println!("{}", hex::encode(code.clone()));
+
+	let mut pc = 0;
+	loop {
+		if pc >= code.len() {
+			break;
+		}
+
+		let op = Instruction::from_u8(code[pc]).expect("oprator should not be None");
+		print!("{:?}  {:?}", pc, op);
+
+		if op.is_push() {
+			let a = op as usize - Instruction::PUSH1 as usize + 1;
+			print!("  => {}", hex::encode(code[pc+1..pc+1+a].to_vec()));
+
+			pc += a;
+		}
+
+		println!();
+
+		pc += 1;
+	}
+}
+
 #[derive(Debug, Deserialize)]
 struct Args {
 	cmd_stats: bool,
 	cmd_state_test: bool,
 	cmd_stats_jsontests_vm: bool,
+	cmd_disasm: bool,
 	arg_file: Option<PathBuf>,
 	flag_code: Option<String>,
 	flag_to: Option<String>,

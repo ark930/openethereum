@@ -19,7 +19,7 @@
 use std::time::{Instant, Duration};
 
 use common_types::transaction;
-use ethcore::test_helpers::{EvmTestClient, EvmTestError, TransactErr, TransactSuccess, TrieSpec};
+use crate::test_helpers::{EvmTestClient, EvmTestError, TransactErr, TransactSuccess, TrieSpec};
 use ethereum_types::{H256, U256};
 use ethjson;
 use pod::PodState;
@@ -99,6 +99,10 @@ pub fn run_action<T: Informant>(
 			Ok(r) => (Ok(r.return_data.to_vec()), Some(r.gas_left)),
 			Err(err) => (Err(err), None),
 		};
+		// client.state.commit();
+		// let (root, db) = client.state.drop();
+		// db.journal_db().flush();
+		// (result.0, root, None, result.1, informant.drain())
 		(result.0, H256::from_low_u64_be(0), None, result.1, informant.drain())
 	})
 }
