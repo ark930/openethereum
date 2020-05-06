@@ -351,7 +351,7 @@ fn run_disasm(args: Args) {
 		}
 
 		let op = Instruction::from_u8(code[pc]).expect("unknown opcode");
-		print!("{:?}  {:?}", pc, op);
+		print!("{:^5}  {:?}", pc, op);
 
 		if op.is_push() {
 			let a = op as usize - Instruction::PUSH1 as usize + 1;
