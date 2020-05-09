@@ -360,7 +360,14 @@ fn run_disasm(args: Args) {
 				print!("{:^5}  {:?}", pc, op);
 				if op.is_push() {
 					let a = op as usize - Instruction::PUSH1 as usize + 1;
-					print!("  => {}", hex::encode(code[pc+1..pc+1+a].to_vec()));
+					let mut data = Vec::new();
+					if pc+1+a <= code.len() {
+						data = code[pc+1..pc+1+a].to_vec();
+					} else {
+						data = code[pc+1..].to_vec();
+						(0..pc+1+a - code.len()).for_each(|_| data.push(0u8));
+					}
+					print!("  => {}", hex::encode(data));
 					pc += a;
 				}
 			},
