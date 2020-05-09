@@ -64,7 +64,7 @@ Usage:
     evmbin state-test <file> [--chain CHAIN --only NAME --json --std-json --std-dump-json --std-out-only --std-err-only]
     evmbin stats [options]
     evmbin stats-jsontests-vm <file>
-    evmbin disasm --code <code>
+    evmbin disasm [--code <code> | --codefile <file>]
     evmbin [options]
     evmbin [-h | --help]
 
@@ -77,6 +77,7 @@ Commands:
 
 Transaction options:
     --code CODE        Contract code as hex (without 0x).
+    --codefile FILE    Contract code as hex (without 0x) stored in file.
     --to ADDRESS       Recipient address (without 0x).
     --from ADDRESS     Sender address (without 0x).
     --input DATA       Input data as hex (without 0x).
@@ -341,7 +342,11 @@ fn run_call<T: Informant>(args: Args, informant: T) {
 }
 
 fn run_disasm(args: Args) {
-	let code = arg(args.code(), "--code").expect("code should not be None");
+	let code = if let Some(code) = arg(args.codefile(), "--codefile") {
+		code
+	} else {
+		arg(args.code(), "--code").expect("either --code or --codefile shoud be specified")
+	};
 	println!("{}", hex::encode(code.clone()));
 
 	let mut pc = 0;
@@ -375,6 +380,7 @@ struct Args {
 	cmd_disasm: bool,
 	arg_file: Option<PathBuf>,
 	flag_code: Option<String>,
+	flag_codefile: Option<PathBuf>,
 	flag_to: Option<String>,
 	flag_from: Option<String>,
 	flag_input: Option<String>,
@@ -395,6 +401,21 @@ impl Args {
 	pub fn code(&self) -> Result<Option<Bytes>, String> {
 		match self.flag_code {
 			Some(ref code) => code.from_hex().map(Some).map_err(to_string),
+			None => Ok(None),
+		}
+	}
+
+	// CLI option `--codefile FILE`
+	/// Set the contract code in hex and stored in file.
+	pub fn codefile(&self) -> Result<Option<Bytes>, String> {
+		match self.flag_codefile {
+			Some(ref filename) => {
+				if let Ok(code) = fs::read_to_string(filename) {
+					code.from_hex().map(Some).map_err(to_string)
+				} else {
+					Err("file not exists".into())
+				}
+			},
 			None => Ok(None),
 		}
 	}

@@ -12,7 +12,7 @@ Usage:
     evmbin state-test <file> [--json --std-json --std-dump-json --only NAME --chain CHAIN --std-out-only --std-err-only]
     evmbin stats [options]
     evmbin stats-jsontests-vm <file>
-    evmbin disasm --code <code>
+    evmbin disasm [--code <code> | --codefile <file>]
     evmbin [options]
     evmbin [-h | --help]
 
@@ -24,6 +24,7 @@ Commands:
 
 Transaction options:
     --code CODE        Contract code as hex (without 0x).
+    --codefile FILE    Contract code as hex (without 0x) stored in file.
     --to ADDRESS       Recipient address (without 0x).
     --from ADDRESS     Sender address (without 0x).
     --input DATA       Input data as hex (without 0x).
