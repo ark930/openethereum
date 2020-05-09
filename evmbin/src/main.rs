@@ -350,18 +350,19 @@ fn run_disasm(args: Args) {
 			break;
 		}
 
-		let op = Instruction::from_u8(code[pc]).expect("unknown opcode");
-		print!("{:^5}  {:?}", pc, op);
-
-		if op.is_push() {
-			let a = op as usize - Instruction::PUSH1 as usize + 1;
-			print!("  => {}", hex::encode(code[pc+1..pc+1+a].to_vec()));
-
-			pc += a;
-		}
+		match Instruction::from_u8(code[pc]) {
+			Some(op) => {
+				print!("{:^5}  {:?}", pc, op);
+				if op.is_push() {
+					let a = op as usize - Instruction::PUSH1 as usize + 1;
+					print!("  => {}", hex::encode(code[pc+1..pc+1+a].to_vec()));
+					pc += a;
+				}
+			},
+			None => print!("{:^5}  Missing opcode {:#x}", pc, code[pc]),
+		};
 
 		println!();
-
 		pc += 1;
 	}
 }
